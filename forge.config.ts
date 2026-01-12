@@ -22,13 +22,6 @@ const config: ForgeConfig = {
     new MakerZIP({}, ["darwin"]),
     new MakerRpm({}),
     new MakerDeb({}),
-    {
-      name: "@electron-forge/maker-squirrel",
-      config: {
-        certificateFile: "./cert.pfx",
-        certificatePassword: process.env.CERTIFICATE_PASSWORD,
-      },
-    },
   ],
   plugins: [
     new AutoUnpackNativesPlugin({}),
