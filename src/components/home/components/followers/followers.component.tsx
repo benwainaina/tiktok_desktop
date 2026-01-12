@@ -59,15 +59,7 @@ const FollowersPresentComponent = ({ followers }: any) => {
   return (
     <div className="followersPresent">
       <div className="followersPresent__count">
-        <div className="followersPresent__count__icon">
-          <ImageComponent uri="https://iili.io/fvjuIGR.png" />
-        </div>
-
-        <div className="followersPresent__count__value_wrapper">
-          <span className="followersPresent__count__value_wrapper__value">
-            +{followers.length}
-          </span>
-        </div>
+        New followers (+{followers.length})
       </div>
       <div
         style={{

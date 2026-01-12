@@ -72,7 +72,7 @@ export const LikesComponent = ({ payload }: any) => {
 const NoLikesComponent = () => {
   return (
     <div className="noLikes__wrapper">
-      <span className="noLikes__instruction">Top fans will appear here.</span>
+      <span className="noLikes__instruction">Top <em><b>likers</b></em> will appear here.</span>
     </div>
   );
 };

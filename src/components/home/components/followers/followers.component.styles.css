@@ -3,8 +3,8 @@
 }
 
 .noFollowers {
-  padding: 7px;
-  background-color: rgba(255, 255, 255, 0.4);
+  padding: 7px 0;
+  /* background-color: rgba(255, 255, 255, 0.4); */
   border-radius: 100px;
   display: flex;
   align-items: center;
@@ -57,7 +57,7 @@
   padding: 3px;
   padding-left: 6px;
   display: flex;
-  row-gap: 6px;
+  row-gap: 8px;
   flex-direction: column;
   align-content: center;
   overflow: hidden;
@@ -69,6 +69,10 @@
   justify-content: center;
   align-items: flex-start;
   column-gap: 2px;
+   font-family: "Poppins", sans-serif;
+   color: #ffffff;
+   font-weight: bold;
+   font-size: 12px;
 }
 .followersPresent__count__icon {
   border-radius: 100px;
@@ -97,7 +101,7 @@
   column-gap: 6px;
   align-items: center;
   margin-top: 3px;
-  margin-bottom: 6px;
+  margin-bottom: 12px;
   background-color: rgba(255, 255, 255, 0.4);
   border-radius: 100px;
   height: auto;
