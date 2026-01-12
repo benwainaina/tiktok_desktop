@@ -1,0 +1,143 @@
+.likes_wrapper {
+  display: flex;
+  justify-content: space-between;
+  row-gap: 8px;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.noLikes__wrapper {
+  padding: 46px 14px;
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+  flex: 1;
+  justify-content: center;
+}
+
+.noLikes__instruction {
+  font-size: 12px;
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  text-align: center;
+  color: #c8c8c8ff;
+}
+
+.leaderBoard {
+  border-radius: 4px;
+  padding: 0 6px;
+  padding-top: 4px;
+  background-color: rgba(255, 255, 255, 0.4);
+  height: fit-content;
+  /* z-index: 100000; */
+}
+
+.leaderBoard__list {
+  width: 100%;
+}
+
+.leaderBoard__user {
+  margin-bottom: 6px;
+  display: flex;
+  flex-direction: row;
+  column-gap: 6px;
+  align-items: center;
+  padding-right: 12px;
+}
+
+.leaderBoard__user__avatar {
+  width: 28px;
+  aspect-ratio: 1;
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.leaderBoard__user__info {
+  display: flex;
+  row-gap: 2px;
+  flex-direction: column;
+  width: 70px;
+  /* padding-right: 10px; */
+}
+
+.leaderBoard__user__info__username {
+  font-size: 11px;
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  color: #ddd9d9ff;
+  white-space: nowrap;
+}
+
+.leaderBoard__user__info__likesCount {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 4px;
+  margin-top: -4px;
+}
+
+.leaderBoard__user__info__likesCount__value {
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  font-size: 11px;
+  color: #ffffff;
+}
+
+.totalLikes {
+  padding: 12px 8px;
+  padding-bottom: 3px;
+  background-color: rgba(255, 255, 255, 0.4);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 5px;
+  border-radius: 100px;
+}
+
+.totalLikes__icon {
+  width: 24px;
+}
+
+.totalLikes__progress_wrapper {
+  flex: 1;
+  row-gap: 3px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  margin-top: -4px;
+}
+
+.totalLikes__progress_visual {
+  height: 5px;
+  background-color: #ffffff;
+  border-radius: 100px;
+}
+
+.totalLikes__progress__active {
+  background-color: #f22c56;
+  height: 100%;
+  border-radius: 100px;
+}
+
+.totalLikes__wrapper {
+  display: flex;
+  flex-direction: row;
+  column-gap: 3px;
+  align-items: center;
+}
+
+.totalLikes__text {
+  font-size: 11px;
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  color: white;
+}
+
+.totalLikes__textSeparator {
+  height: 1em;
+  width: 2px;
+  background-color: #ffffff;
+  border-radius: 100px;
+}

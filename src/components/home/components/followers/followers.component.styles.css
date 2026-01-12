@@ -1,0 +1,155 @@
+.followers_wrapper {
+  height: 100%;
+}
+
+.noFollowers {
+  padding: 7px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  row-gap: 5px;
+  height: fit-content;
+  justify-content: center;
+}
+
+.noFollowers__instruction {
+  font-size: 10px;
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  color: #c8c8c8ff;
+  padding: 5px 0px;
+}
+
+.noFollowers__inner {
+  display: flex;
+  flex-direction: row;
+  column-gap: 11px;
+  align-items: center;
+}
+
+.noFollowers__inner__main {
+  row-gap: 10px;
+}
+
+.noFollowers__inner__main__avatar {
+  width: 50px;
+  aspect-ratio: 1;
+  background-color: #d9d9d9;
+  border-radius: 100px;
+}
+
+.noFollowers__inner__main__username {
+  background-color: #d9d9d9;
+  height: 14px;
+  border-radius: 100;
+}
+
+.noFollowers__inner__others {
+  width: 25px;
+  aspect-ratio: 1;
+  background-color: #d9d9d9;
+  border-radius: 100;
+  margin-top: -24px;
+}
+
+.followersPresent {
+  padding: 3px;
+  padding-left: 6px;
+  display: flex;
+  row-gap: 6px;
+  flex-direction: column;
+  align-content: center;
+  overflow: hidden;
+  height: 100%;
+}
+.followersPresent__count {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  column-gap: 2px;
+}
+.followersPresent__count__icon {
+  border-radius: 100px;
+  overflow: hidden;
+  margin-top: 2px;
+  width: 36px;
+  height: 36px;
+}
+.followersPresent__count__value_wrapper {
+  background-color: #ffffff;
+  right: 6px;
+  display: flex;
+  padding: 0px 8px;
+  border-radius: 100px;
+}
+.followersPresent__count__value_wrapper__value {
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  color: #000000;
+  line-height: 16px;
+}
+.followersPresent__latestFollower {
+  display: flex;
+  flex-direction: row;
+  column-gap: 6px;
+  align-items: center;
+  margin-top: 3px;
+  margin-bottom: 6px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 100px;
+  height: auto;
+  padding: 4px;
+}
+.followersPresent__latestFollower__avatar {
+  width: 28px;
+  aspect-ratio: 1;
+  border-radius: 100px;
+  overflow: hidden;
+}
+.followersPresent__latestFollower__info {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  width: 100px;
+  row-gap: 4px;
+}
+.followersPresent__latestFollower__info__name {
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  font-size: 12px;
+  color: #c7c7c7ff;
+  white-space: nowrap;
+}
+.followersPresent__latestFollower__info__instruction {
+  margin-top: -4px;
+  font-size: 11px;
+  font-family: "Inter", sans-serif;
+  color: #ffffff;
+}
+
+.followersCount {
+  display: flex;
+  flex-direction: row;
+  column-gap: 4px;
+  align-items: center;
+}
+.followersCountLabel {
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  color: #ddd9d9ff;
+}
+.followersCountDivider {
+  width: 2px;
+  background-color: #ddd9d9ff;
+  height: 67%;
+  border-radius: 100px;
+}
+.followersCountValue {
+  font-size: 16px;
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  color: #ddd9d9ff;
+}
