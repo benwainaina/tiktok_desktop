@@ -8,28 +8,40 @@
 }
 
 .noLikes__wrapper {
-  padding: 23px 14px;
-  display: flex;
-  /* align-items: center; */
-  /* background-color: rgba(255, 255, 255, 0.4); */
+  padding: 12px 14px;
+  width: fit-content;
   border-radius: 4px;
-  flex: 1;
-  justify-content: center;
+  display: flex;
+  justify-content: flex-start;
   flex-direction: column;
+  row-gap: 12px;
 }
 
 .noLikes__instruction {
-  font-size: 12px;
+  font-size: 11px;
   font-family: "Poppins", sans-serif;
   font-weight: bold;
-  text-align: center;
   color: #c8c8c8ff;
 }
 
 .noLikes__instruction__list {
-  font-size: 12px;
+  font-size: 10px;
   font-family: "Inter", sans-serif;
   color: #c8c8c8ff;
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+}
+
+.noLikes__instruction__list__likes {
+  display: flex;
+  align-items: center;
+  column-gap: 6px;
+}
+
+.noLikes__instruction__list__likes__img {
+  width: 18px;
+  height: 18px;
 }
 
 .noLikes__instruction__list li {
@@ -63,6 +75,7 @@
   aspect-ratio: 1;
   border-radius: 100px;
   overflow: hidden;
+  border: 1px solid #ddd9d9ff;
 }
 
 .leaderBoard__user__info {
@@ -75,7 +88,7 @@
 }
 
 .leaderBoard__user__info__username {
-  font-size: 11px;
+  font-size: 9px;
   font-family: "Poppins", sans-serif;
   font-weight: bold;
   color: #ddd9d9ff;
@@ -93,8 +106,9 @@
 .leaderBoard__user__info__likesCount__value {
   font-family: "Poppins", sans-serif;
   font-weight: bold;
-  font-size: 11px;
+  font-size: 9px;
   color: #ffffff;
+  margin-top: -4px;
 }
 
 .totalLikes {
@@ -172,6 +186,7 @@
   border-radius: 100px;
   overflow: hidden;
   margin-top: 3px;
+  border: 1px solid #f22c56;
 }
 .followersPresent__latestFollower__avatar__icon {
   width: 16px;
@@ -189,13 +204,13 @@
 .followersPresent__latestFollower__info__name {
   font-family: "Poppins", sans-serif;
   font-weight: bold;
-  font-size: 11px;
+  font-size: 9px;
   color: #c7c7c7ff;
   white-space: nowrap;
 }
 .followersPresent__latestFollower__info__instruction {
   margin-top: -4px;
-  font-size: 10px;
+  font-size: 9px;
   font-family: "Inter", sans-serif;
   color: #ffffff;
   font-style: italic;
@@ -220,6 +235,7 @@
   border-radius: 100px;
   overflow: hidden;
   margin-top: 3px;
+  border: 1px solid #f22c56;
 }
 
 .followersPresent__latestShare__avatar__icon {
@@ -239,13 +255,13 @@
 .followersPresent__latestShare__info__name {
   font-family: "Poppins", sans-serif;
   font-weight: bold;
-  font-size: 11px;
+  font-size: 9px;
   color: #c7c7c7ff;
   white-space: nowrap;
 }
 .followersPresent__latestShare__info__instruction {
   margin-top: -4px;
-  font-size: 10px;
+  font-size: 9px;
   font-family: "Inter", sans-serif;
   color: #ffffff;
   font-style: italic;

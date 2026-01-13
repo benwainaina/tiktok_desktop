@@ -19,7 +19,7 @@ export const LikesComponent = ({ payload }: any) => {
   /**
    * States
    */
-  const [leaderBoard, setLeaderBoard] = useState<any[]>([]);
+  const [leaderBoard, setLeaderBoard] = useState<any[]>(MOCK_DATA);
   const [totalLikes, setTotalLikes] = useState<number>(0);
   const [newFollowers, setNewFollowers] = useState<number>(0);
 
@@ -102,12 +102,29 @@ export const LikesComponent = ({ payload }: any) => {
 const NoLikesComponent = () => {
   return (
     <div className="noLikes__wrapper">
-      <span className="noLikes__instruction">Chat stats.</span>
-      <ol className="noLikes__instruction__list">
-        <li>Top Likers.</li>
-        <li>Follows.</li>
-        <li>Shares.</li>
-      </ol>
+      <div className="noLikes__instruction">Live stream stats.</div>
+      <div className="noLikes__instruction__list">
+        <div className="noLikes__instruction__list__likes">
+          <div className="noLikes__instruction__list__likes__img">
+            <ImageComponent uri="https://iili.io/fvjuoZJ.png" />
+          </div>
+          <span>Top likes</span>
+        </div>
+
+        <div className="noLikes__instruction__list__likes">
+          <div className="noLikes__instruction__list__likes__img">
+            <ImageComponent uri="https://iili.io/f8nwiLQ.png" />
+          </div>
+          <span>New follows</span>
+        </div>
+
+        <div className="noLikes__instruction__list__likes">
+          <div className="noLikes__instruction__list__likes__img">
+            <ImageComponent uri="https://iili.io/f8B1KHN.png" />
+          </div>
+          <span>Live shares</span>
+        </div>
+      </div>
     </div>
   );
 };
