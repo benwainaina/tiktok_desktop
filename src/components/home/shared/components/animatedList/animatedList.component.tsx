@@ -17,8 +17,8 @@ export const AnimatedListComponent = ({
       key: (item: any) => item.name,
       from: { height: 0, opacity: 0 },
       leave: { height: 0, opacity: 0 },
-      enter: ({ y, height }) => ({ y, height, opacity: 1 }),
-      update: ({ y, height }) => ({ y, height }),
+      enter: ({ y, height }: any) => ({ y, height, opacity: 1 }),
+      update: ({ y, height }: any) => ({ y, height }),
     }
   );
 
