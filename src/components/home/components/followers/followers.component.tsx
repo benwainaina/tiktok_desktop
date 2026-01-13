@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import { ImageComponent } from "../../shared/components/image.component";
 import "./followers.component.styles";
+import { MOCK_DATA } from "../../../constants/mock.users.constants";
+import { AnimatedListComponent } from "../../shared/components/animatedList/animatedList.component";
 
 interface IFollowerInfo {
   avatar: string;
@@ -66,9 +68,11 @@ const FollowersPresentComponent = ({ followers }: any) => {
           overflow: "hidden",
         }}
       >
-        {(followers as any).map((user: any, index: number) => (
-          <NewFollowerWrapperComponent key={index} payload={user} />
-        ))}
+        <AnimatedListComponent
+          list={followers}
+          RefListComponent={NewFollowerWrapperComponent}
+          wrapperHeight={50}
+        />
       </div>
     </div>
   );

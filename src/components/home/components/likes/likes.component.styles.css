@@ -58,7 +58,8 @@
   display: flex;
   row-gap: 2px;
   flex-direction: column;
-  width: 70px;
+  width: 100px;
+  overflow: hidden;
   /* padding-right: 10px; */
 }
 

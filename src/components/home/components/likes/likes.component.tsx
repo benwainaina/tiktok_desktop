@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { ImageComponent } from "../../shared/components/image.component";
 import { numberFormatterUtility } from "../../utilities/numberFormatter.utility";
 import "./likes.component.styles";
+import { MOCK_DATA } from "../../../constants/mock.users.constants";
+import { AnimatedListComponent } from "../../shared/components/animatedList/animatedList.component";
 
 interface ILikeInfo {
   username: string;
@@ -72,7 +74,13 @@ export const LikesComponent = ({ payload }: any) => {
 const NoLikesComponent = () => {
   return (
     <div className="noLikes__wrapper">
-      <span className="noLikes__instruction">Top <em><b>likers</b></em> will appear here.</span>
+      <span className="noLikes__instruction">
+        Top{" "}
+        <em>
+          <b>likers</b>
+        </em>{" "}
+        will appear here.
+      </span>
     </div>
   );
 };
@@ -88,9 +96,11 @@ const LikesPresentComponent = ({ leaderBoard }: any) => {
 
   return (
     <div className="leaderBoard">
-      {(leaderBoard as any[]).slice(0, 10).map((user, index) => (
-        <LikesLeaderBoardUserComponent key={index} payload={user} />
-      ))}
+      <AnimatedListComponent
+        list={leaderBoard.slice(0, 10)}
+        RefListComponent={LikesLeaderBoardUserComponent}
+        wrapperHeight={50}
+      />
     </div>
   );
 };
