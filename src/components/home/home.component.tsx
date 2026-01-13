@@ -67,12 +67,14 @@ const ActionsComponent = () => {
       const payload = jsonStringToObjectUtility(socketData.data);
       switch (payload.event_type) {
         case "like":
+        case "follow":
+        case "share":
           setLikesDelta(payload);
           break;
 
-        case "follow":
-          setFollowsDelta(payload);
-          break;
+        // case "follow":
+        //   setFollowsDelta(payload);
+        //   break;
       }
     }
   }, [socketData]);
@@ -96,10 +98,11 @@ const ActionsComponent = () => {
 
         <div className="sectionTwo">
           <div className="sectionTwo_A">
-            <LikesComponent payload={likesDelta} />
+            {/* <LikesComponent payload={likesDelta} /> */}
           </div>
           <div className="sectionTwo_B">
-            <FollowersComponent payload={followsDelta} />
+            {/* <FollowersComponent payload={followsDelta} /> */}
+            <LikesComponent payload={likesDelta} />
           </div>
         </div>
       </div>
