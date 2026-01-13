@@ -19,7 +19,7 @@ export const LikesComponent = ({ payload }: any) => {
   /**
    * States
    */
-  const [leaderBoard, setLeaderBoard] = useState<any[]>(MOCK_DATA);
+  const [leaderBoard, setLeaderBoard] = useState<any[]>([]);
   const [totalLikes, setTotalLikes] = useState<number>(0);
   const [newFollowers, setNewFollowers] = useState<number>(0);
 
