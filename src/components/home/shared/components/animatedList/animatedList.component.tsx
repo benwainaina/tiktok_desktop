@@ -14,7 +14,7 @@ export const AnimatedListComponent = ({
       y: (height += wrapperHeight) - wrapperHeight,
     })),
     {
-      key: (item: any) => item.index,
+      key: (item: any) => item.uniqueId,
       from: { height: 0, opacity: 0 },
       leave: { height: 0, opacity: 0 },
       enter: ({ y, height }: any) => ({ y, height, opacity: 1 }),

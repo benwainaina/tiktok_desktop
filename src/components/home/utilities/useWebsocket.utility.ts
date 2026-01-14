@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { jsonObjectToStringUtility } from './jsonObjectToString.utility';
+import { useEffect, useState } from "react";
+import { jsonObjectToStringUtility } from "./jsonObjectToString.utility";
 
 export const useWebsocketUtilityHook = () => {
   /**
@@ -12,7 +12,7 @@ export const useWebsocketUtilityHook = () => {
    * effects
    */
   useEffect(() => {
-    webSocket?.addEventListener('message', message => setSocketData(message));
+    webSocket?.addEventListener("message", (message) => setSocketData(message));
   }, [webSocket]);
 
   return {
@@ -22,5 +22,6 @@ export const useWebsocketUtilityHook = () => {
     closeSocket: () => webSocket?.close(),
     socketData,
     webSocket,
+    setSocketData,
   };
 };

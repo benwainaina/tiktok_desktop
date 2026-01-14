@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { itemScalerUtility } from "../../utilities/itemScaler.utility";
 import { useEffect, useRef, useState } from "react";
@@ -30,44 +31,70 @@ export const LikesComponent = ({ payload }: any) => {
     if (payload && Object.keys(payload).length !== 0) {
       setTotalLikes(totalLikes + payload.likes_increment);
       let currentLeaderBoard = leaderBoard;
-      const userInLeaderboard: any = leaderBoard.find(
-        ({ username }) => username === payload.username
-      );
+      const uniqueId = `${payload.username}_${payload.event_type}`;
       switch (payload.event_type) {
         case "like":
-          if (userInLeaderboard) {
-            userInLeaderboard.totalLikes += payload.likes_increment;
-          } else {
-            currentLeaderBoard.push({
-              username: payload.username,
-              totalLikes: payload.likes_increment,
-              avatar: payload.avatar,
-              name: payload.name,
-              type: payload.event_type,
-              index: Math.ceil(Math.random() * 10000000000),
+          const likingUser: any = leaderBoard.find(
+            ({ uniqueId: leaderboardUserUniqueId }) =>
+              uniqueId === leaderboardUserUniqueId
+          );
+          let updatedLeaderboard = [];
+          if (likingUser) {
+            updatedLeaderboard = currentLeaderBoard.map((leaderboardUser) => {
+              if (leaderboardUser.uniqueId === likingUser.uniqueId) {
+                leaderboardUser.totalLikes += payload.likes_increment;
+              }
+              return leaderboardUser;
             });
+          } else {
+            updatedLeaderboard = [
+              ...currentLeaderBoard,
+              {
+                username: payload.username,
+                totalLikes: payload.likes_increment,
+                avatar: payload.avatar,
+                name: payload.name,
+                type: payload.event_type,
+                uniqueId,
+              },
+            ];
           }
+          currentLeaderBoard = updatedLeaderboard;
           break;
         case "follow":
         case "share":
-          const topFollowerCount = JSON.parse(
-            JSON.stringify(currentLeaderBoard)
-          ).sort((a: any, b: any) => (a.totalLikes < b.totalLikes ? 1 : -1))[0];
-          if (topFollowerCount) {
-            const likersOnly = currentLeaderBoard.filter(
-              (a, b) => a.type === "like"
-            );
+          let likersOnly = [];
+          if (currentLeaderBoard.length === 0) {
             likersOnly.push({
               username: payload.username,
-              totalLikes: topFollowerCount.totalLikes + newFollowers,
+              totalLikes: 7,
               avatar: payload.avatar,
               name: payload.name,
               type: payload.event_type,
+              uniqueId,
             });
-            currentLeaderBoard = likersOnly;
-            setNewFollowers(newFollowers + 1);
+          } else {
+            const topFollowerCount = JSON.parse(
+              JSON.stringify(currentLeaderBoard)
+            ).sort((a: any, b: any) =>
+              a.totalLikes < b.totalLikes ? 1 : -1
+            )[0];
+            if (topFollowerCount) {
+              likersOnly = currentLeaderBoard.filter(
+                (a, b) => a.type === "like"
+              );
+              likersOnly.push({
+                username: payload.username,
+                totalLikes: topFollowerCount.totalLikes,
+                avatar: payload.avatar,
+                name: payload.name,
+                type: payload.event_type,
+                uniqueId,
+              });
+            }
           }
-
+          currentLeaderBoard = likersOnly;
+          setNewFollowers(newFollowers + 1);
           break;
       }
       onNewRecordComputeLeader(currentLeaderBoard);

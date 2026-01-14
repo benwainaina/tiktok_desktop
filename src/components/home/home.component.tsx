@@ -8,6 +8,8 @@ import { jsonStringToObjectUtility } from "./utilities/jsonStringToObject.utilit
 import "./home.component.styles";
 import { LikesComponent } from "./components/likes/likes.component";
 import { FollowersComponent } from "./components/followers/followers.component";
+import { ImageComponent } from "./shared/components/image.component";
+import { numberFormatterUtility } from "./utilities/numberFormatter.utility";
 
 export const HomeComponent = () => {
   return (
@@ -27,6 +29,7 @@ const ActionsComponent = () => {
     sendData: sendSocketData,
     socketData,
     webSocket,
+    setSocketData,
   } = useWebsocketUtilityHook();
 
   /**
@@ -34,6 +37,7 @@ const ActionsComponent = () => {
    */
   const [likesDelta, setLikesDelta] = useState<Record<string, string>>({});
   const [followsDelta, setFollowsDelta] = useState<Record<string, string>>({});
+  const [likesCount, setLikesCount] = useState<number>(0);
 
   /**
    * Effects
@@ -69,12 +73,13 @@ const ActionsComponent = () => {
         case "like":
         case "follow":
         case "share":
+          if (payload.event_type === "like") {
+            setLikesCount(likesCount + payload.likes_increment);
+          }
           setLikesDelta(payload);
           break;
-
-        // case "follow":
-        //   setFollowsDelta(payload);
-        //   break;
+        case "join":
+          break;
       }
     }
   }, [socketData]);
@@ -84,6 +89,19 @@ const ActionsComponent = () => {
       closeSocket();
     };
   }, []);
+
+  const mockAction = (event_type: string, payload?: any) => {
+    setSocketData({
+      data: JSON.stringify({
+        username: "gameranthemtv",
+        avatar:
+          "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/13f067b94895453e03b19593f3815a02~tplv-tiktokx-cropcenter:100:100.webp?dr=14579&refresh_token=841a0110&x-expires=1768478400&x-signature=ivcCAfGl8Ozhif5I1Ya6uY340B0%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=fdd36af4&idc=my",
+        name: "Gamer Anthem TV",
+        event_type,
+        ...payload,
+      }),
+    });
+  };
 
   return (
     <div className="home_wrapper">
@@ -98,12 +116,56 @@ const ActionsComponent = () => {
 
         <div className="sectionTwo">
           <div className="sectionTwo_A">
-            {/* <LikesComponent payload={likesDelta} /> */}
+            <LikesCountComponent totalLikes={likesCount} />
           </div>
           <div className="sectionTwo_B">
-            {/* <FollowersComponent payload={followsDelta} /> */}
             <LikesComponent payload={likesDelta} />
           </div>
+        </div>
+
+        {/* <div
+          style={{
+            backgroundColor: "red",
+          }}
+        >
+          <button onClick={() => mockAction("like", { likes_increment: 10 })}>
+            Like
+          </button>
+          <button onClick={() => mockAction("share")}>Share</button>
+          <button onClick={() => mockAction("follow")}>Follow</button>
+        </div> */}
+      </div>
+    </div>
+  );
+};
+
+const LikesCountComponent = ({ totalLikes }: any) => {
+  /**
+   * States
+   */
+  const [goal, setGoal] = useState<number>(10000);
+
+  return (
+    <div className="totalLikes">
+      <div className="totalLikes__icon">
+        <ImageComponent uri="https://iili.io/fvjuoZJ.png" />
+      </div>
+      <div className="totalLikes__progress_wrapper">
+        <div className="totalLikes__progress_visual">
+          <div
+            style={{ width: Math.ceil((totalLikes / goal) * 100) }}
+            className="totalLikes__progress__active"
+          />
+        </div>
+
+        <div className="totalLikes__wrapper">
+          <span className="totalLikes__text">
+            {numberFormatterUtility(totalLikes)}
+          </span>
+          <div className="totalLikes__textSeparator" />
+          <span className="totalLikes__text">
+            {numberFormatterUtility(goal)}
+          </span>
         </div>
       </div>
     </div>
