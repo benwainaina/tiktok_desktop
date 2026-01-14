@@ -1,0 +1,55 @@
+.joinedTheLiveWrapper {
+  margin-top: 24px;
+}
+
+.joinedTheLiveWrapper__user {
+  display: flex;
+  align-items: center;
+  column-gap: 6px;
+}
+
+.followersPresent__joinedTheLive {
+  display: flex;
+  flex-direction: row;
+  column-gap: 6px;
+  align-items: center;
+  margin-bottom: 6px;
+  border-radius: 100px;
+  height: auto;
+}
+.followersPresent__joinedTheLive__avatar {
+  width: 26px;
+  aspect-ratio: 1;
+  border-radius: 100px;
+  overflow: hidden;
+  margin-top: 3px;
+  border: 1px solid #f22c56;
+}
+
+.followersPresent__joinedTheLive__avatar__icon {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 0;
+}
+
+.followersPresent__joinedTheLive__info {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  width: 100px;
+  row-gap: 4px;
+}
+.followersPresent__joinedTheLive__info__name {
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  font-size: 9px;
+  color: #c7c7c7ff;
+  white-space: nowrap;
+}
+.followersPresent__joinedTheLive__info__instruction {
+  margin-top: -4px;
+  font-size: 9px;
+  font-family: "Inter", sans-serif;
+  color: #ffffff;
+}

@@ -22,7 +22,6 @@ export const LikesComponent = ({ payload }: any) => {
    */
   const [leaderBoard, setLeaderBoard] = useState<any[]>([]);
   const [totalLikes, setTotalLikes] = useState<number>(0);
-  const [newFollowers, setNewFollowers] = useState<number>(0);
 
   /**
    * Effects
@@ -94,7 +93,7 @@ export const LikesComponent = ({ payload }: any) => {
             }
           }
           currentLeaderBoard = likersOnly;
-          setNewFollowers(newFollowers + 1);
+
           break;
       }
       onNewRecordComputeLeader(currentLeaderBoard);
@@ -162,7 +161,7 @@ const LikesPresentComponent = ({ leaderBoard }: any) => {
       <AnimatedListComponent
         list={leaderBoard.slice(0, 10)}
         RefListComponent={LeaderBoardUserComponent}
-        wrapperHeight={41}
+        wrapperHeight={33}
       />
     </div>
   );

@@ -10,6 +10,7 @@ import { LikesComponent } from "./components/likes/likes.component";
 import { FollowersComponent } from "./components/followers/followers.component";
 import { ImageComponent } from "./shared/components/image.component";
 import { numberFormatterUtility } from "./utilities/numberFormatter.utility";
+import { JoinedComponent } from "./components/joined/joined.component";
 
 export const HomeComponent = () => {
   return (
@@ -38,6 +39,9 @@ const ActionsComponent = () => {
   const [likesDelta, setLikesDelta] = useState<Record<string, string>>({});
   const [followsDelta, setFollowsDelta] = useState<Record<string, string>>({});
   const [likesCount, setLikesCount] = useState<number>(0);
+  const [joinedDelta, setJoinedDelta] = useState<Record<string, string>>({});
+  const [newFollowers, setNewFollowers] = useState<number>(0);
+  const [newFollowersGoal, setNewFollowersGoal] = useState(5);
 
   /**
    * Effects
@@ -77,8 +81,16 @@ const ActionsComponent = () => {
             setLikesCount(likesCount + payload.likes_increment);
           }
           setLikesDelta(payload);
+          if (payload.event_type === "follow") {
+            const _newFollowers = newFollowers + 1;
+            if (_newFollowers >= newFollowersGoal) {
+              setNewFollowersGoal(newFollowersGoal + 5);
+            }
+            setNewFollowers(_newFollowers);
+          }
           break;
         case "join":
+          setJoinedDelta(payload);
           break;
       }
     }
@@ -117,6 +129,11 @@ const ActionsComponent = () => {
         <div className="sectionTwo">
           <div className="sectionTwo_A">
             <LikesCountComponent totalLikes={likesCount} />
+            <NewFollowersCountComponent
+              newFollowers={newFollowers}
+              newFollowersGoal={newFollowersGoal}
+            />
+            <JoinedComponent payload={joinedDelta} />
           </div>
           <div className="sectionTwo_B">
             <LikesComponent payload={likesDelta} />
@@ -171,3 +188,15 @@ const LikesCountComponent = ({ totalLikes }: any) => {
     </div>
   );
 };
+
+const NewFollowersCountComponent = ({
+  newFollowers,
+  newFollowersGoal,
+}: any) => (
+  <div className="newFollowers_count">
+    <span className="newFollowers_count__value">
+      {newFollowers} / {newFollowersGoal}
+    </span>{" "}
+    New follower{newFollowers === 1 ? "" : "s"}
+  </div>
+);
