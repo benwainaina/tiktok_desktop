@@ -148,7 +148,7 @@ const ActionsComponent = () => {
             backgroundColor: "red",
           }}
         >
-          <button onClick={() => mockAction("like", { likes_increment: 10 })}>
+          <button onClick={() => mockAction("like", { likes_increment: 1 })}>
             Like
           </button>
           <button onClick={() => mockAction("share")}>Share</button>

@@ -61,6 +61,7 @@ export const LikesComponent = ({ payload }: any) => {
             ];
           }
           currentLeaderBoard = updatedLeaderboard;
+          onNewRecordComputeLeader(currentLeaderBoard);
           break;
         case "follow":
         case "share":
@@ -74,7 +75,6 @@ export const LikesComponent = ({ payload }: any) => {
           });
           break;
       }
-      onNewRecordComputeLeader(currentLeaderBoard);
       // setLeaderBoard(currentLeaderBoard);
     }
   }, [payload]);
@@ -85,10 +85,7 @@ export const LikesComponent = ({ payload }: any) => {
 
   const onNewRecordComputeLeader = (currentLeaderBoard: any[]) => {
     currentLeaderBoard.sort((a, b) => (a.totalLikes < b.totalLikes ? 1 : -1));
-    let topFive = [];
-    topFive = currentLeaderBoard.slice(0, 5);
-
-    setLeaderBoard(topFive);
+    setLeaderBoard(currentLeaderBoard);
   };
 
   /**
@@ -98,7 +95,7 @@ export const LikesComponent = ({ payload }: any) => {
   return (
     <div className="likes_wrapper">
       {/* <LikesCountComponent totalLikes={totalLikes} /> */}
-      {leaderBoard.length === 0 ? (
+      {leaderBoard.length === 0 && lastShareOrFollow === undefined ? (
         <NoLikesComponent />
       ) : (
         <LikesPresentComponent leaderBoard={leaderBoard} />
@@ -146,7 +143,7 @@ const LikesPresentComponent = ({ leaderBoard }: any) => {
   return (
     <div className="leaderBoard">
       <AnimatedListComponent
-        list={leaderBoard}
+        list={leaderBoard.slice(0, 5)}
         RefListComponent={LeaderBoardUserComponent}
         wrapperHeight={35}
       />
