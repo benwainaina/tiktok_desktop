@@ -1,13 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
+import SlotCounter from "react-slot-counter";
 import { EXTERNAL_CONSTANTS } from "../constants/constants";
-// import { LikesComponent } from "./components/likes/likes.component";
 import { itemScalerUtility } from "./utilities/itemScaler.utility";
-// import { FollowersComponent } from "./components/followers/followers.component";
 import { useWebsocketUtilityHook } from "./utilities/useWebsocket.utility";
 import { jsonStringToObjectUtility } from "./utilities/jsonStringToObject.utility";
 import "./home.component.styles";
 import { LikesComponent } from "./components/likes/likes.component";
-import { FollowersComponent } from "./components/followers/followers.component";
 import { ImageComponent } from "./shared/components/image.component";
 import { numberFormatterUtility } from "./utilities/numberFormatter.utility";
 import { JoinedComponent } from "./components/joined/joined.component";
@@ -41,7 +40,9 @@ const ActionsComponent = () => {
   const [likesCount, setLikesCount] = useState<number>(0);
   const [joinedDelta, setJoinedDelta] = useState<Record<string, string>>({});
   const [newFollowers, setNewFollowers] = useState<number>(0);
-  const [newFollowersGoal, setNewFollowersGoal] = useState(5);
+  const [newFollowersGoal, setNewFollowersGoal] = useState(
+    EXTERNAL_CONSTANTS.totalFollowersGoal
+  );
 
   /**
    * Effects
@@ -84,7 +85,9 @@ const ActionsComponent = () => {
           if (payload.event_type === "follow") {
             const _newFollowers = newFollowers + 1;
             if (_newFollowers >= newFollowersGoal) {
-              setNewFollowersGoal(newFollowersGoal + 5);
+              setNewFollowersGoal(
+                newFollowersGoal + EXTERNAL_CONSTANTS.totalFollowersGoal
+              );
             }
             setNewFollowers(_newFollowers);
           }
@@ -140,7 +143,7 @@ const ActionsComponent = () => {
           </div>
         </div>
 
-        {/* <div
+        <div
           style={{
             backgroundColor: "red",
           }}
@@ -150,7 +153,8 @@ const ActionsComponent = () => {
           </button>
           <button onClick={() => mockAction("share")}>Share</button>
           <button onClick={() => mockAction("follow")}>Follow</button>
-        </div> */}
+          <button onClick={() => mockAction("join")}>Join</button>
+        </div>
       </div>
     </div>
   );
@@ -160,7 +164,13 @@ const LikesCountComponent = ({ totalLikes }: any) => {
   /**
    * States
    */
-  const [goal, setGoal] = useState<number>(10000);
+  const [goal, setGoal] = useState<number>(EXTERNAL_CONSTANTS.totalLikesGoal);
+
+  useEffect(() => {
+    if (totalLikes >= goal) {
+      setGoal(goal + EXTERNAL_CONSTANTS.totalLikesGoal);
+    }
+  }, [totalLikes]);
 
   return (
     <div className="totalLikes">
@@ -177,7 +187,7 @@ const LikesCountComponent = ({ totalLikes }: any) => {
 
         <div className="totalLikes__wrapper">
           <span className="totalLikes__text">
-            {numberFormatterUtility(totalLikes)}
+            <SlotCounter value={numberFormatterUtility(totalLikes)} />
           </span>
           <div className="totalLikes__textSeparator" />
           <span className="totalLikes__text">
@@ -194,9 +204,11 @@ const NewFollowersCountComponent = ({
   newFollowersGoal,
 }: any) => (
   <div className="newFollowers_count">
-    <span className="newFollowers_count__value">
-      {newFollowers} / {newFollowersGoal}
-    </span>{" "}
+    <div className="newFollowers_count__value">
+      <SlotCounter value={numberFormatterUtility(newFollowers)} />
+      <div className="newFollowers_count__value__separator"></div>
+      <SlotCounter value={numberFormatterUtility(newFollowersGoal)} />
+    </div>
     New follower{newFollowers === 1 ? "" : "s"}
   </div>
 );

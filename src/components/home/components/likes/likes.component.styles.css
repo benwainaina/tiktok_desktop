@@ -1,7 +1,7 @@
 .likes_wrapper {
   display: flex;
   justify-content: space-between;
-  row-gap: 8px;
+  /* row-gap: 8px; */
   flex-direction: column;
   position: relative;
   overflow: hidden;
@@ -50,7 +50,7 @@
 
 .leaderBoard {
   border-radius: 4px;
-  padding: 0 6px;
+  /* padding: 0 6px; */
   padding-top: 4px;
   /* background-color: rgba(255, 255, 255, 0.4); */
   height: fit-content;
@@ -122,6 +122,7 @@
   border-radius: 100px;
   height: auto;
   /* padding: 4px; */
+  position: relative;
 }
 .followersPresent__latestFollower__avatar {
   width: 26px;
@@ -171,6 +172,7 @@
   border-radius: 100px;
   height: auto;
   /* padding: 4px; */
+  position: relative;
 }
 .followersPresent__latestShare__avatar {
   width: 26px;
@@ -208,4 +210,8 @@
   font-family: "Inter", sans-serif;
   color: #ffffff;
   /* font-style: italic; */
+}
+
+.likes_wrapper__followsAndShares {
+  margin-top: -3px;
 }

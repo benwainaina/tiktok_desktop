@@ -1,7 +1,8 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import SlotCounter from "react-slot-counter";
 import { itemScalerUtility } from "../../utilities/itemScaler.utility";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { ImageComponent } from "../../shared/components/image.component";
 import { numberFormatterUtility } from "../../utilities/numberFormatter.utility";
 import "./likes.component.styles";
@@ -22,6 +23,7 @@ export const LikesComponent = ({ payload }: any) => {
    */
   const [leaderBoard, setLeaderBoard] = useState<any[]>([]);
   const [totalLikes, setTotalLikes] = useState<number>(0);
+  const [lastShareOrFollow, setLastShareOrFollow] = useState<any>();
 
   /**
    * Effects
@@ -62,42 +64,18 @@ export const LikesComponent = ({ payload }: any) => {
           break;
         case "follow":
         case "share":
-          let likersOnly = [];
-          if (currentLeaderBoard.length === 0) {
-            likersOnly.push({
-              username: payload.username,
-              totalLikes: 7,
-              avatar: payload.avatar,
-              name: payload.name,
-              type: payload.event_type,
-              uniqueId,
-            });
-          } else {
-            const topFollowerCount = JSON.parse(
-              JSON.stringify(currentLeaderBoard)
-            ).sort((a: any, b: any) =>
-              a.totalLikes < b.totalLikes ? 1 : -1
-            )[0];
-            if (topFollowerCount) {
-              likersOnly = currentLeaderBoard.filter(
-                (a, b) => a.type === "like"
-              );
-              likersOnly.push({
-                username: payload.username,
-                totalLikes: topFollowerCount.totalLikes,
-                avatar: payload.avatar,
-                name: payload.name,
-                type: payload.event_type,
-                uniqueId,
-              });
-            }
-          }
-          currentLeaderBoard = likersOnly;
-
+          setLastShareOrFollow({
+            username: payload.username,
+            totalLikes: payload.likes_increment,
+            avatar: payload.avatar,
+            name: payload.name,
+            type: payload.event_type,
+            uniqueId,
+          });
           break;
       }
       onNewRecordComputeLeader(currentLeaderBoard);
-      setLeaderBoard(currentLeaderBoard);
+      // setLeaderBoard(currentLeaderBoard);
     }
   }, [payload]);
 
@@ -107,6 +85,10 @@ export const LikesComponent = ({ payload }: any) => {
 
   const onNewRecordComputeLeader = (currentLeaderBoard: any[]) => {
     currentLeaderBoard.sort((a, b) => (a.totalLikes < b.totalLikes ? 1 : -1));
+    let topFive = [];
+    topFive = currentLeaderBoard.slice(0, 5);
+
+    setLeaderBoard(topFive);
   };
 
   /**
@@ -120,6 +102,11 @@ export const LikesComponent = ({ payload }: any) => {
         <NoLikesComponent />
       ) : (
         <LikesPresentComponent leaderBoard={leaderBoard} />
+      )}
+      {lastShareOrFollow && (
+        <div className="likes_wrapper__followsAndShares">
+          <LeaderBoardUserComponent payload={lastShareOrFollow} />
+        </div>
       )}
     </div>
   );
@@ -159,9 +146,9 @@ const LikesPresentComponent = ({ leaderBoard }: any) => {
   return (
     <div className="leaderBoard">
       <AnimatedListComponent
-        list={leaderBoard.slice(0, 10)}
+        list={leaderBoard}
         RefListComponent={LeaderBoardUserComponent}
-        wrapperHeight={33}
+        wrapperHeight={35}
       />
     </div>
   );
@@ -224,7 +211,9 @@ const LeaderBoardUserComponent = ({ payload }: any) => {
               </div>
 
               <span className="leaderBoard__user__info__likesCount__value">
-                {numberFormatterUtility(payload.totalLikes)}
+                <SlotCounter
+                  value={numberFormatterUtility(payload.totalLikes)}
+                />
               </span>
             </div>
           </div>

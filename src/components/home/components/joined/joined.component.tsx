@@ -8,18 +8,17 @@ export const JoinedComponent = ({ payload }: any) => {
   const [userList, setUserList] = useState<any[]>([]);
 
   useEffect(() => {
-    const currentUserList = userList;
     if (payload && Object.keys(payload).length !== 0) {
-      setUserList([payload, ...currentUserList]);
+      setUserList([payload]);
     }
   }, [payload]);
 
   return (
     <div className="joinedTheLiveWrapper">
       <AnimatedListComponent
-        list={userList.slice(0, 2)}
+        list={userList.slice(0, 1)}
         RefListComponent={JoinedUserComponent}
-        wrapperHeight={33}
+        wrapperHeight={35}
       />
     </div>
   );

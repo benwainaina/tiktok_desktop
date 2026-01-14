@@ -15,7 +15,7 @@ export const MOCK_DATA = [
     avatar:
       "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/13f067b94895453e03b19593f3815a02~tplv-tiktokx-cropcenter:100:100.webp?dr=14579&refresh_token=841a0110&x-expires=1768478400&x-signature=ivcCAfGl8Ozhif5I1Ya6uY340B0%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=fdd36af4&idc=my",
     name: "Gamer Anthem TV",
-    type: "share",
+    type: "like",
   },
   {
     username: "gdrisnaata",

@@ -126,12 +126,20 @@
   align-items: center;
   color: white;
   column-gap: 6px;
-  font-family: "Poppins", sans-serif;
+  font-family: "Popppins", sans-serif;
   font-weight: bold;
-  font-size: 10px;
+  font-size: 11px;
   margin-top: 24px;
 }
 
 .newFollowers_count__value {
-  font-size: 18px;
+  font-size: 20px;
+  display: flex;
+  column-gap: 4px;
+}
+
+.newFollowers_count__value__separator {
+  width: 3px;
+  height: 25px;
+  background-color: white;
 }
