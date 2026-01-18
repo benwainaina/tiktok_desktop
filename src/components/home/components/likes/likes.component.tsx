@@ -8,6 +8,7 @@ import { numberFormatterUtility } from "../../utilities/numberFormatter.utility"
 import "./likes.component.styles";
 import { MOCK_DATA } from "../../../constants/mock.users.constants";
 import { AnimatedListComponent } from "../../shared/components/animatedList/animatedList.component";
+import { EXTERNAL_CONSTANTS } from "../../../constants/constants";
 
 interface ILikeInfo {
   username: string;
@@ -17,65 +18,72 @@ interface ILikeInfo {
 
 const payload = [];
 
-export const LikesComponent = ({ payload }: any) => {
+export const LikesComponent = ({ payload, totalCumulativeLikes }: any) => {
   /**
    * States
    */
   const [leaderBoard, setLeaderBoard] = useState<any[]>([]);
   const [totalLikes, setTotalLikes] = useState<number>(0);
   const [lastShareOrFollow, setLastShareOrFollow] = useState<any>();
+  const [goal, setGoal] = useState<number>(EXTERNAL_CONSTANTS.totalLikesGoal);
 
   /**
    * Effects
    */
   useEffect(() => {
-    if (payload && Object.keys(payload).length !== 0) {
-      setTotalLikes(totalLikes + payload.likes_increment);
-      let currentLeaderBoard = leaderBoard;
-      const uniqueId = `${payload.username}_${payload.event_type}`;
-      switch (payload.event_type) {
-        case "like":
-          const likingUser: any = leaderBoard.find(
-            ({ uniqueId: leaderboardUserUniqueId }) =>
-              uniqueId === leaderboardUserUniqueId
-          );
-          let updatedLeaderboard = [];
-          if (likingUser) {
-            updatedLeaderboard = currentLeaderBoard.map((leaderboardUser) => {
-              if (leaderboardUser.uniqueId === likingUser.uniqueId) {
-                leaderboardUser.totalLikes += payload.likes_increment;
-              }
-              return leaderboardUser;
+    if (totalCumulativeLikes >= goal) {
+      setGoal(goal + EXTERNAL_CONSTANTS.totalLikesGoal);
+      setLeaderBoard(leaderBoard.map((user) => ({ ...user, totalLikes: 0 })));
+    } else {
+      if (payload && Object.keys(payload).length !== 0) {
+        setTotalLikes(totalLikes + payload.likes_increment);
+        let currentLeaderBoard = leaderBoard;
+        const uniqueId = `${payload.username}_${payload.event_type}`;
+        switch (payload.event_type) {
+          case "like":
+            const likingUser: any = leaderBoard.find(
+              ({ uniqueId: leaderboardUserUniqueId }) =>
+                uniqueId === leaderboardUserUniqueId,
+            );
+            let updatedLeaderboard = [];
+            if (likingUser) {
+              updatedLeaderboard = currentLeaderBoard.map((leaderboardUser) => {
+                if (leaderboardUser.uniqueId === likingUser.uniqueId) {
+                  leaderboardUser.totalLikes += payload.likes_increment;
+                }
+                return leaderboardUser;
+              });
+            } else {
+              updatedLeaderboard = [
+                ...currentLeaderBoard,
+                {
+                  username: payload.username,
+                  totalLikes: payload.likes_increment,
+                  avatar: payload.avatar,
+                  name: payload.name,
+                  type: payload.event_type,
+                  uniqueId,
+                },
+              ];
+            }
+            currentLeaderBoard = updatedLeaderboard;
+            onNewRecordComputeLeader(currentLeaderBoard);
+            break;
+          case "follow":
+          case "gift":
+            setLastShareOrFollow({
+              username: payload.username,
+              totalLikes: payload.likes_increment,
+              avatar: payload.avatar,
+              name: payload.name,
+              type: payload.event_type,
+              uniqueId,
+              gift: payload.gift,
             });
-          } else {
-            updatedLeaderboard = [
-              ...currentLeaderBoard,
-              {
-                username: payload.username,
-                totalLikes: payload.likes_increment,
-                avatar: payload.avatar,
-                name: payload.name,
-                type: payload.event_type,
-                uniqueId,
-              },
-            ];
-          }
-          currentLeaderBoard = updatedLeaderboard;
-          onNewRecordComputeLeader(currentLeaderBoard);
-          break;
-        case "follow":
-        case "share":
-          setLastShareOrFollow({
-            username: payload.username,
-            totalLikes: payload.likes_increment,
-            avatar: payload.avatar,
-            name: payload.name,
-            type: payload.event_type,
-            uniqueId,
-          });
-          break;
+            break;
+        }
+        // setLeaderBoard(currentLeaderBoard);
       }
-      // setLeaderBoard(currentLeaderBoard);
     }
   }, [payload]);
 
@@ -84,7 +92,10 @@ export const LikesComponent = ({ payload }: any) => {
    */
 
   const onNewRecordComputeLeader = (currentLeaderBoard: any[]) => {
-    currentLeaderBoard.sort((a, b) => (a.totalLikes < b.totalLikes ? 1 : -1));
+    currentLeaderBoard.sort(
+      (a, b) =>
+        (a.totalLikes < b.totalLikes ? 1 : -1) || a.name.compare(b.name),
+    );
     setLeaderBoard(currentLeaderBoard);
   };
 
@@ -236,20 +247,23 @@ const LeaderBoardUserComponent = ({ payload }: any) => {
         </div>
       )}
 
-      {payload.type === "share" && (
-        <div className="followersPresent__latestShare">
-          <div className="followersPresent__latestShare__avatar">
+      {payload.type === "gift" && (
+        <div className="followersPresent__latestGift">
+          <div className="followersPresent__latestGift__avatar">
             <ImageComponent uri={payload.avatar} />
-            <div className="followersPresent__latestShare__avatar__icon">
-              <ImageComponent uri="https://iili.io/f8B1KHN.png" />
+            <div className="followersPresent__latestGift__avatar__icon">
+              <ImageComponent uri="https://iili.io/fUskRHl.png" />
             </div>
           </div>
-          <div className="followersPresent__latestShare__info">
-            <span className="followersPresent__latestShare__info__name">
+          <div className="followersPresent__latestGift__info">
+            <span className="followersPresent__latestGift__info__name">
               {payload.name}
             </span>
-            <span className="followersPresent__latestShare__info__instruction">
-              Shared the live
+            <span className="followersPresent__latestGift__info__instruction">
+              Sent {payload.gift.name}{" "}
+              <b>
+                <em>x{payload.gift.repeat}</em>
+              </b>
             </span>
           </div>
         </div>
@@ -257,3 +271,6 @@ const LeaderBoardUserComponent = ({ payload }: any) => {
     </>
   );
 };
+{
+  /* <img src="https://iili.io/fUskRHl.webp" alt="gift box present icon 225155" border="0"></img> */
+}

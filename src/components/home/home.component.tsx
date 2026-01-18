@@ -10,6 +10,7 @@ import { LikesComponent } from "./components/likes/likes.component";
 import { ImageComponent } from "./shared/components/image.component";
 import { numberFormatterUtility } from "./utilities/numberFormatter.utility";
 import { JoinedComponent } from "./components/joined/joined.component";
+import { SharedComponent } from "./components/shares/share.component";
 
 export const HomeComponent = () => {
   return (
@@ -39,9 +40,10 @@ const ActionsComponent = () => {
   const [followsDelta, setFollowsDelta] = useState<Record<string, string>>({});
   const [likesCount, setLikesCount] = useState<number>(0);
   const [joinedDelta, setJoinedDelta] = useState<Record<string, string>>({});
+  const [sharedDelta, setSharedDelta] = useState<Record<string, string>>({});
   const [newFollowers, setNewFollowers] = useState<number>(0);
   const [newFollowersGoal, setNewFollowersGoal] = useState(
-    EXTERNAL_CONSTANTS.totalFollowersGoal
+    EXTERNAL_CONSTANTS.totalFollowersGoal,
   );
 
   /**
@@ -77,7 +79,7 @@ const ActionsComponent = () => {
       switch (payload.event_type) {
         case "like":
         case "follow":
-        case "share":
+        case "gift":
           if (payload.event_type === "like") {
             setLikesCount(likesCount + payload.likes_increment);
           }
@@ -86,7 +88,7 @@ const ActionsComponent = () => {
             const _newFollowers = newFollowers + 1;
             if (_newFollowers >= newFollowersGoal) {
               setNewFollowersGoal(
-                newFollowersGoal + EXTERNAL_CONSTANTS.totalFollowersGoal
+                newFollowersGoal + EXTERNAL_CONSTANTS.totalFollowersGoal,
               );
             }
             setNewFollowers(_newFollowers);
@@ -94,6 +96,9 @@ const ActionsComponent = () => {
           break;
         case "join":
           setJoinedDelta(payload);
+          break;
+        case "share":
+          setSharedDelta(payload);
           break;
       }
     }
@@ -136,10 +141,14 @@ const ActionsComponent = () => {
               newFollowers={newFollowers}
               newFollowersGoal={newFollowersGoal}
             />
+            <SharedComponent payload={sharedDelta} />
             <JoinedComponent payload={joinedDelta} />
           </div>
           <div className="sectionTwo_B">
-            <LikesComponent payload={likesDelta} />
+            <LikesComponent
+              payload={likesDelta}
+              totalCumulativeLikes={likesCount}
+            />
           </div>
         </div>
 
@@ -154,6 +163,13 @@ const ActionsComponent = () => {
           <button onClick={() => mockAction("share")}>Share</button>
           <button onClick={() => mockAction("follow")}>Follow</button>
           <button onClick={() => mockAction("join")}>Join</button>
+          <button
+            onClick={() =>
+              mockAction("gift", { gift: { repeat: 4, name: "rose" } })
+            }
+          >
+            Gift
+          </button>
         </div>
       </div>
     </div>
