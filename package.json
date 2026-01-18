@@ -27,6 +27,7 @@
     "@electron-forge/plugin-fuses": "^7.10.2",
     "@electron-forge/plugin-webpack": "^7.10.2",
     "@electron/fuses": "^1.8.0",
+    "@types/lodash": "^4.17.23",
     "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
@@ -45,6 +46,7 @@
   "dependencies": {
     "@react-spring/types": "^10.0.3",
     "electron-squirrel-startup": "^1.0.1",
+    "lodash": "^4.17.21",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-native-reanimated": "^4.2.1",

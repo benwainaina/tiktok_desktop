@@ -9,6 +9,7 @@ import "./likes.component.styles";
 import { MOCK_DATA } from "../../../constants/mock.users.constants";
 import { AnimatedListComponent } from "../../shared/components/animatedList/animatedList.component";
 import { EXTERNAL_CONSTANTS } from "../../../constants/constants";
+import { orderBy } from "lodash";
 
 interface ILikeInfo {
   username: string;
@@ -92,11 +93,12 @@ export const LikesComponent = ({ payload, totalCumulativeLikes }: any) => {
    */
 
   const onNewRecordComputeLeader = (currentLeaderBoard: any[]) => {
-    currentLeaderBoard.sort(
-      (a, b) =>
-        (a.totalLikes < b.totalLikes ? 1 : -1) || a.name.compare(b.name),
+    const sortedLeaderBoard = orderBy(
+      currentLeaderBoard,
+      ["totalLikes", "name"],
+      ["desc", "desc"],
     );
-    setLeaderBoard(currentLeaderBoard);
+    setLeaderBoard(sortedLeaderBoard);
   };
 
   /**
