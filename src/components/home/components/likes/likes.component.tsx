@@ -230,7 +230,7 @@ const LeaderBoardUserComponent = ({ payload }: any) => {
         </div>
       )}
 
-      {payload.type === "follow" && (
+      {/* {payload.type === "follow" && (
         <div className="followersPresent__latestFollower">
           <div className="followersPresent__latestFollower__avatar">
             <ImageComponent uri={payload.avatar} />
@@ -247,9 +247,9 @@ const LeaderBoardUserComponent = ({ payload }: any) => {
             </span>
           </div>
         </div>
-      )}
+      )} */}
 
-      {payload.type === "gift" && (
+      {/* {payload.type === "gift" && (
         <div className="followersPresent__latestGift">
           <div className="followersPresent__latestGift__avatar">
             <ImageComponent uri={payload.avatar} />
@@ -269,7 +269,7 @@ const LeaderBoardUserComponent = ({ payload }: any) => {
             </span>
           </div>
         </div>
-      )}
+      )} */}
     </>
   );
 };

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SlotCounter from "react-slot-counter";
 import { EXTERNAL_CONSTANTS } from "../constants/constants";
 import { itemScalerUtility } from "./utilities/itemScaler.utility";
@@ -11,6 +11,12 @@ import { ImageComponent } from "./shared/components/image.component";
 import { numberFormatterUtility } from "./utilities/numberFormatter.utility";
 import { JoinedComponent } from "./components/joined/joined.component";
 import { SharedComponent } from "./components/shares/share.component";
+import { GiftComponent } from "./components/gifts/gifts.component";
+
+const NEW_FOLLOWER_AUDIO = new Audio(
+  "https://benwainaina.github.io//newfolloweralert.mp3",
+);
+const CHEER_AUDIO = new Audio("https://benwainaina.github.io//cheer.mp3");
 
 export const HomeComponent = () => {
   return (
@@ -37,11 +43,15 @@ const ActionsComponent = () => {
    * States
    */
   const [likesDelta, setLikesDelta] = useState<Record<string, string>>({});
+  const [giftsDelta, setGiftsDelta] = useState<Record<string, string>>({});
   const [followsDelta, setFollowsDelta] = useState<Record<string, string>>({});
   const [likesCount, setLikesCount] = useState<number>(0);
   const [joinedDelta, setJoinedDelta] = useState<Record<string, string>>({});
   const [sharedDelta, setSharedDelta] = useState<Record<string, string>>({});
   const [newFollowers, setNewFollowers] = useState<number>(0);
+  const [followedDelta, setFollowedDelta] = useState<Record<string, string>>(
+    {},
+  );
   const [newFollowersGoal, setNewFollowersGoal] = useState(
     EXTERNAL_CONSTANTS.totalFollowersGoal,
   );
@@ -78,27 +88,27 @@ const ActionsComponent = () => {
       const payload = jsonStringToObjectUtility(socketData.data);
       switch (payload.event_type) {
         case "like":
-        case "follow":
-        case "gift":
-          if (payload.event_type === "like") {
-            setLikesCount(likesCount + payload.likes_increment);
-          }
+          setLikesCount(likesCount + payload.likes_increment);
           setLikesDelta(payload);
-          if (payload.event_type === "follow") {
-            const _newFollowers = newFollowers + 1;
-            if (_newFollowers >= newFollowersGoal) {
-              setNewFollowersGoal(
-                newFollowersGoal + EXTERNAL_CONSTANTS.totalFollowersGoal,
-              );
-            }
-            setNewFollowers(_newFollowers);
+          break;
+        case "follow":
+          const _newFollowers = newFollowers + 1;
+          if (_newFollowers >= newFollowersGoal) {
+            setNewFollowersGoal(
+              newFollowersGoal + EXTERNAL_CONSTANTS.totalFollowersGoal,
+            );
           }
+          setNewFollowers(_newFollowers);
+          setFollowedDelta(payload);
           break;
         case "join":
           setJoinedDelta(payload);
           break;
         case "share":
           setSharedDelta(payload);
+          break;
+        case "gift":
+          setGiftsDelta(payload);
           break;
       }
     }
@@ -111,12 +121,13 @@ const ActionsComponent = () => {
   }, []);
 
   const mockAction = (event_type: string, payload?: any) => {
+    const mockName = "wanda";
     setSocketData({
       data: JSON.stringify({
-        username: "gameranthemtv",
+        username: mockName,
         avatar:
           "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/13f067b94895453e03b19593f3815a02~tplv-tiktokx-cropcenter:100:100.webp?dr=14579&refresh_token=841a0110&x-expires=1768478400&x-signature=ivcCAfGl8Ozhif5I1Ya6uY340B0%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=fdd36af4&idc=my",
-        name: "Gamer Anthem TV",
+        name: mockName,
         event_type,
         ...payload,
       }),
@@ -134,15 +145,16 @@ const ActionsComponent = () => {
           </div>
         </div>
 
+        <GiftComponent gift={giftsDelta} />
+
         <div className="sectionTwo">
           <div className="sectionTwo_A">
-            <LikesCountComponent totalLikes={likesCount} />
             <NewFollowersCountComponent
               newFollowers={newFollowers}
               newFollowersGoal={newFollowersGoal}
+              payload={followedDelta}
             />
             <SharedComponent payload={sharedDelta} />
-            <JoinedComponent payload={joinedDelta} />
           </div>
           <div className="sectionTwo_B">
             <LikesComponent
@@ -165,7 +177,9 @@ const ActionsComponent = () => {
           <button onClick={() => mockAction("join")}>Join</button>
           <button
             onClick={() =>
-              mockAction("gift", { gift: { repeat: 4, name: "rose" } })
+              mockAction("gift", {
+                gift: { repeat: Math.ceil(Math.random() * 10), name: "rose" },
+              })
             }
           >
             Gift
@@ -216,15 +230,67 @@ const LikesCountComponent = ({ totalLikes }: any) => {
 };
 
 const NewFollowersCountComponent = ({
+  payload,
   newFollowers,
   newFollowersGoal,
-}: any) => (
-  <div className="newFollowers_count">
-    <div className="newFollowers_count__value">
-      <SlotCounter value={numberFormatterUtility(newFollowers)} />
-      <div className="newFollowers_count__value__separator"></div>
-      <SlotCounter value={numberFormatterUtility(newFollowersGoal)} />
+}: any) => {
+  useEffect(() => {
+    if (newFollowers) {
+      NEW_FOLLOWER_AUDIO.play();
+      CHEER_AUDIO.play();
+    }
+  }, [newFollowers]);
+  return (
+    <div className="">
+      <div className="newFollower">
+        <div className="newFollower__icon">
+          <ImageComponent uri="https://iili.io/f4SfP14.png" />
+        </div>
+        <div className="newFollower__progress_wrapper">
+          <div className="newFollower__progress_visual">
+            <div
+              style={{
+                width: Math.ceil((newFollowers / newFollowersGoal) * 100),
+              }}
+              className="newFollower__progress__active"
+            />
+          </div>
+
+          <div className="newFollower__wrapper">
+            <span className="newFollower__text">
+              <SlotCounter value={numberFormatterUtility(newFollowers)} />
+            </span>
+            <div className="newFollower__textSeparator" />
+            <span className="newFollower__text">
+              {numberFormatterUtility(newFollowersGoal)}
+            </span>
+          </div>
+        </div>
+      </div>
+      {Object.keys(payload).length !== 0 && (
+        <div className="followersPresent__latestFollower">
+          <div className="followersPresent__latestFollower__avatar">
+            <ImageComponent uri={payload.avatar} />
+            <div className="followersPresent__latestFollower__avatar__icon">
+              <ImageComponent uri="https://iili.io/f8nwiLQ.png" />
+            </div>
+          </div>
+          <div className="followersPresent__latestFollower__info">
+            <span className="followersPresent__latestFollower__info__name">
+              {payload.name}
+            </span>
+            <span className="followersPresent__latestFollower__info__instruction">
+              Followed the host
+            </span>
+          </div>
+        </div>
+      )}
     </div>
-    New follower{newFollowers === 1 ? "" : "s"}
-  </div>
-);
+  );
+};
+{
+  /* <img src="https://iili.io/f4SdAkg.png" alt="new follow" border="0"></img> */
+}
+{
+  /* <img src="https://iili.io/f4SfP14.png" alt="new follow (1)" border="0"></img> */
+}

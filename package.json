@@ -14,7 +14,7 @@
   "keywords": [],
   "author": {
     "name": "Ben Wainaina",
-    "email": "bwainaina@curalinc.com"
+    "email": "bwainainamwangi@gmail.com"
   },
   "license": "MIT",
   "devDependencies": {
@@ -49,6 +49,7 @@
     "lodash": "^4.17.21",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
+    "react-fast-marquee": "^1.6.5",
     "react-native-reanimated": "^4.2.1",
     "react-slot-counter": "^3.3.2",
     "react-spring": "^10.0.3"
