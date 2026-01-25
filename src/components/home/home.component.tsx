@@ -121,7 +121,7 @@ const ActionsComponent = () => {
   }, []);
 
   const mockAction = (event_type: string, payload?: any) => {
-    const mockName = "wanda";
+    const mockName = Math.ceil(Math.random() * 1000);
     setSocketData({
       data: JSON.stringify({
         username: mockName,
@@ -236,10 +236,13 @@ const NewFollowersCountComponent = ({
 }: any) => {
   useEffect(() => {
     if (newFollowers) {
+      NEW_FOLLOWER_AUDIO.currentTime = 0;
+      CHEER_AUDIO.currentTime = 0;
       NEW_FOLLOWER_AUDIO.play();
       CHEER_AUDIO.play();
     }
   }, [newFollowers]);
+
   return (
     <div className="">
       <div className="newFollower">

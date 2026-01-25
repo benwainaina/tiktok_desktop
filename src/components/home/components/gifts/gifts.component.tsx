@@ -13,6 +13,8 @@ export const GiftComponent = ({ gift }: any) => {
 
   useEffect(() => {
     if (Object.keys(gift).length !== 0) {
+      GIFT_AUDIO.currentTime = 0;
+      PARTY_WHISTLE.currentTime = 0;
       GIFT_AUDIO.play();
       GIFT_AUDIO.onended = () => PARTY_WHISTLE.play();
       const userGiftExists = gifts.find(
