@@ -234,14 +234,55 @@ const NewFollowersCountComponent = ({
   newFollowers,
   newFollowersGoal,
 }: any) => {
+  const [playQueue, setPlayQueue] = useState<any[]>([]);
+  const [newFollow, setNewFollow] = useState<any>({});
+  const [newFollowersUpdate, setNewFollowersUpdate] = useState<number>(0);
+  const [newFollowersGoalUpdate, setNewFollowersGoalUpdate] =
+    useState<number>(newFollowersGoal);
   useEffect(() => {
     if (newFollowers) {
-      NEW_FOLLOWER_AUDIO.currentTime = 0;
-      CHEER_AUDIO.currentTime = 0;
-      NEW_FOLLOWER_AUDIO.play();
-      CHEER_AUDIO.play();
+      setPlayQueue([
+        {
+          main: NEW_FOLLOWER_AUDIO,
+          secondary: CHEER_AUDIO,
+          followerPayload: payload,
+          payload,
+          newFollowers,
+          newFollowersGoal,
+        },
+        ...playQueue,
+      ]);
+      // The below option would be verry snappy and full celebration would not be
+      // heard for the new follows
+      // NEW_FOLLOWER_AUDIO.currentTime = 0;
+      // CHEER_AUDIO.currentTime = 0;
+      // NEW_FOLLOWER_AUDIO.play();
+      // CHEER_AUDIO.play();
     }
   }, [newFollowers]);
+
+  useEffect(() => {
+    if (playQueue.length !== 0) {
+      for (let index = 0; index < playQueue.length; index++) {
+        const {
+          main,
+          secondary,
+          payload: followerPayload,
+          newFollowers: newFollowersCount,
+          newFollowersGoal: newFollowersGoalCount,
+        } = playQueue[index];
+        main.play();
+        secondary.play();
+        setNewFollow(followerPayload);
+        setNewFollowersUpdate(newFollowersCount);
+        setNewFollowersGoalUpdate(newFollowersGoalCount);
+        secondary.onended = () => {
+          playQueue.pop();
+          setPlayQueue([...playQueue]);
+        };
+      }
+    }
+  }, [playQueue]);
 
   return (
     <div className="">
@@ -253,7 +294,9 @@ const NewFollowersCountComponent = ({
           <div className="newFollower__progress_visual">
             <div
               style={{
-                width: Math.ceil((newFollowers / newFollowersGoal) * 100),
+                width: Math.ceil(
+                  (newFollowersUpdate / newFollowersGoalUpdate) * 100,
+                ),
               }}
               className="newFollower__progress__active"
             />
@@ -261,26 +304,26 @@ const NewFollowersCountComponent = ({
 
           <div className="newFollower__wrapper">
             <span className="newFollower__text">
-              <SlotCounter value={numberFormatterUtility(newFollowers)} />
+              <SlotCounter value={numberFormatterUtility(newFollowersUpdate)} />
             </span>
             <div className="newFollower__textSeparator" />
             <span className="newFollower__text">
-              {numberFormatterUtility(newFollowersGoal)}
+              {numberFormatterUtility(newFollowersGoalUpdate)}
             </span>
           </div>
         </div>
       </div>
-      {Object.keys(payload).length !== 0 && (
+      {Object.keys(newFollow).length !== 0 && (
         <div className="followersPresent__latestFollower">
           <div className="followersPresent__latestFollower__avatar">
-            <ImageComponent uri={payload.avatar} />
+            <ImageComponent uri={newFollow.avatar} />
             <div className="followersPresent__latestFollower__avatar__icon">
               <ImageComponent uri="https://iili.io/f8nwiLQ.png" />
             </div>
           </div>
           <div className="followersPresent__latestFollower__info">
             <span className="followersPresent__latestFollower__info__name">
-              {payload.name}
+              {newFollow.name}
             </span>
             <span className="followersPresent__latestFollower__info__instruction">
               Followed the host
