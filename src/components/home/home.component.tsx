@@ -55,6 +55,9 @@ const ActionsComponent = () => {
   const [newFollowersGoal, setNewFollowersGoal] = useState(
     EXTERNAL_CONSTANTS.totalFollowersGoal,
   );
+  const [newFollowerUsernames, setNewFollowerUsernames] = useState<string[]>(
+    [],
+  );
 
   /**
    * Effects
@@ -92,14 +95,27 @@ const ActionsComponent = () => {
           setLikesDelta(payload);
           break;
         case "follow":
-          const _newFollowers = newFollowers + 1;
-          if (_newFollowers >= newFollowersGoal) {
-            setNewFollowersGoal(
-              newFollowersGoal + EXTERNAL_CONSTANTS.totalFollowersGoal,
+          {
+            const userIsAlreadyAFollower = newFollowerUsernames.find(
+              (username) =>
+                username.toString().toLocaleLowerCase() ===
+                payload.username.toString().toLocaleLowerCase(),
             );
+            if (!userIsAlreadyAFollower) {
+              const _newFollowers = newFollowers + 1;
+              if (_newFollowers >= newFollowersGoal) {
+                setNewFollowersGoal(
+                  newFollowersGoal + EXTERNAL_CONSTANTS.totalFollowersGoal,
+                );
+              }
+              setNewFollowers(_newFollowers);
+              setFollowedDelta(payload);
+              setNewFollowerUsernames([
+                payload.username,
+                ...newFollowerUsernames,
+              ]);
+            }
           }
-          setNewFollowers(_newFollowers);
-          setFollowedDelta(payload);
           break;
         case "join":
           setJoinedDelta(payload);
@@ -121,7 +137,7 @@ const ActionsComponent = () => {
   }, []);
 
   const mockAction = (event_type: string, payload?: any) => {
-    const mockName = Math.ceil(Math.random() * 1000);
+    const mockName = 1234; // Math.ceil(Math.random() * 1000);
     setSocketData({
       data: JSON.stringify({
         username: mockName,
