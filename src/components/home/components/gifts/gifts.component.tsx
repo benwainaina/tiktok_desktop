@@ -2,48 +2,54 @@ import { useEffect, useState } from "react";
 import Marquee from "react-fast-marquee";
 import "./gifts.component.css";
 import { ImageComponent } from "../../shared/components/image.component";
-import { MOCK_GIFTS } from "./mockData";
-const GIFT_AUDIO = new Audio("https://benwainaina.github.io//gift.mp3");
-const PARTY_WHISTLE = new Audio(
-  "https://benwainaina.github.io//party-whistle.mp3",
-);
+import { EXTERNAL_CONSTANTS } from "../../../constants/constants";
 
-export const GiftComponent = ({ gift }: any) => {
-  const [gifts, setGifts] = useState<any[]>([]);
-
-  useEffect(() => {
-    if (Object.keys(gift).length !== 0) {
-      GIFT_AUDIO.currentTime = 0;
-      PARTY_WHISTLE.currentTime = 0;
-      GIFT_AUDIO.play();
-      GIFT_AUDIO.onended = () => PARTY_WHISTLE.play();
-      const userGiftExists = gifts.find(
-        (userGift) =>
-          userGift.username === gift.username &&
-          userGift.gift.name.toLowerCase() === gift.gift.name.toLowerCase(),
-      );
-      if (userGiftExists) {
-        const updatedGifts = gifts.map((existingGifter) => {
-          if (existingGifter.username === userGiftExists.username) {
-            existingGifter.gift.repeat += gift.gift.repeat;
-          }
-          return existingGifter;
-        });
-        setGifts(updatedGifts);
-      } else {
-        setGifts([...gifts, gift]);
-      }
-    }
-  }, [gift]);
+export const GiftComponent = () => {
+  const [advertContent, setAdvertContent] = useState<any[]>([
+    { title: EXTERNAL_CONSTANTS.gameName },
+    { title: "No gifts accepted!!!!" },
+    { title: EXTERNAL_CONSTANTS.message },
+    { title: "No inappropriate / unethical comments!" },
+    { title: "love one another." },
+    { title: "remember your creator in the days of your youth." },
+  ]);
 
   return (
     <Marquee speed={50}>
-      <div className="giftsWrapper">
-        {gifts.map((giftUser, index) => (
-          <GiftUserComponent key={index} payload={giftUser} />
+      <div className="advertContent">
+        {advertContent.map((content, index) => (
+          <AdvertContentComponent
+            key={index}
+            payload={{
+              ...content,
+              isLast: index === advertContent.length - 1,
+            }}
+          />
         ))}
       </div>
     </Marquee>
+  );
+};
+
+const AdvertContentComponent = ({ payload }: any) => {
+  return (
+    <div className="advertContent__wrapper">
+      {payload.icon && (
+        <div className="advertContent__content__img">
+          <img
+            className="advertContent__content__wrapper__img"
+            src={payload.icon}
+            alt=""
+          />
+        </div>
+      )}
+      <span className="advertContent__content__instructions">
+        {payload.title}
+      </span>
+      {payload.isLast && (
+        <div className="advertContent__content__divider"> </div>
+      )}
+    </div>
   );
 };
 

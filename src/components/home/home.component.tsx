@@ -43,7 +43,6 @@ const ActionsComponent = () => {
    * States
    */
   const [likesDelta, setLikesDelta] = useState<Record<string, string>>({});
-  const [giftsDelta, setGiftsDelta] = useState<Record<string, string>>({});
   const [followsDelta, setFollowsDelta] = useState<Record<string, string>>({});
   const [likesCount, setLikesCount] = useState<number>(0);
   const [joinedDelta, setJoinedDelta] = useState<Record<string, string>>({});
@@ -123,9 +122,6 @@ const ActionsComponent = () => {
         case "share":
           setSharedDelta(payload);
           break;
-        case "gift":
-          setGiftsDelta(payload);
-          break;
       }
     }
   }, [socketData]);
@@ -161,7 +157,7 @@ const ActionsComponent = () => {
           </div>
         </div>
 
-        <GiftComponent gift={giftsDelta} />
+        <GiftComponent />
 
         <div className="sectionTwo">
           <div className="sectionTwo_A">
