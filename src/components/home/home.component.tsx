@@ -60,10 +60,10 @@ const LandingComponent = ({ onConfirm }: any) => {
   /**
    * States
    */
-  const [username, setUsername] = useState<string>("bacotbapakkau");
+  const [username, setUsername] = useState<string>("gameranthemtv");
   const [gameName, setGameName] = useState<string>("fc 2026 on pc using steam");
-  const [totalFollowersGoal, setTotalFollowersGoal] = useState<number>(5);
-  const [totalLikesGoal, setTotalLikesGoal] = useState<number>(1000);
+  const [totalFollowersGoal, setTotalFollowersGoal] = useState<number>();
+  const [totalLikesGoal, setTotalLikesGoal] = useState<number>();
 
   return (
     <form className="landingComponent__form">
@@ -289,44 +289,44 @@ const ActionsComponent = ({
   );
 };
 
-const LikesCountComponent = ({ totalLikes }: any) => {
-  /**
-   * States
-   */
-  const [goal, setGoal] = useState<number>(EXTERNAL_CONSTANTS.totalLikesGoal);
+// const LikesCountComponent = ({ totalLikes }: any) => {
+//   /**
+//    * States
+//    */
+//   const [goal, setGoal] = useState<number>(EXTERNAL_CONSTANTS.totalLikesGoal);
 
-  useEffect(() => {
-    if (totalLikes >= goal) {
-      setGoal(goal + EXTERNAL_CONSTANTS.totalLikesGoal);
-    }
-  }, [totalLikes]);
+//   useEffect(() => {
+//     if (totalLikes >= goal) {
+//       setGoal(goal + EXTERNAL_CONSTANTS.totalLikesGoal);
+//     }
+//   }, [totalLikes]);
 
-  return (
-    <div className="totalLikes">
-      <div className="totalLikes__icon">
-        <ImageComponent uri="https://iili.io/fvjuoZJ.png" />
-      </div>
-      <div className="totalLikes__progress_wrapper">
-        <div className="totalLikes__progress_visual">
-          <div
-            style={{ width: Math.ceil((totalLikes / goal) * 100) }}
-            className="totalLikes__progress__active"
-          />
-        </div>
+//   return (
+//     <div className="totalLikes">
+//       <div className="totalLikes__icon">
+//         <ImageComponent uri="https://iili.io/fvjuoZJ.png" />
+//       </div>
+//       <div className="totalLikes__progress_wrapper">
+//         <div className="totalLikes__progress_visual">
+//           <div
+//             style={{ width: Math.ceil((totalLikes / goal) * 100) }}
+//             className="totalLikes__progress__active"
+//           />
+//         </div>
 
-        <div className="totalLikes__wrapper">
-          <span className="totalLikes__text">
-            <SlotCounter value={numberFormatterUtility(totalLikes)} />
-          </span>
-          <div className="totalLikes__textSeparator" />
-          <span className="totalLikes__text">
-            {numberFormatterUtility(goal)}
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-};
+//         <div className="totalLikes__wrapper">
+//           <span className="totalLikes__text">
+//             <SlotCounter value={numberFormatterUtility(totalLikes)} />
+//           </span>
+//           <div className="totalLikes__textSeparator" />
+//           <span className="totalLikes__text">
+//             {numberFormatterUtility(goal)}
+//           </span>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
 
 const NewFollowersCountComponent = ({
   payload,
