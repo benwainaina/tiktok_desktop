@@ -4,9 +4,9 @@ import "./gifts.component.css";
 import { ImageComponent } from "../../shared/components/image.component";
 import { EXTERNAL_CONSTANTS } from "../../../constants/constants";
 
-export const GiftComponent = () => {
+export const GiftComponent = ({ gameName }: any) => {
   const [advertContent, setAdvertContent] = useState<any[]>([
-    { title: EXTERNAL_CONSTANTS.gameName },
+    { title: `Game name = ${gameName}.` },
     { title: "No gifts accepted!!!!" },
     { title: EXTERNAL_CONSTANTS.message },
     { title: "No inappropriate / unethical comments!" },

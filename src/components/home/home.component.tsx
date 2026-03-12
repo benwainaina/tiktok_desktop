@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import SlotCounter from "react-slot-counter";
 import { EXTERNAL_CONSTANTS } from "../constants/constants";
 import { itemScalerUtility } from "./utilities/itemScaler.utility";
@@ -9,7 +9,6 @@ import "./home.component.styles";
 import { LikesComponent } from "./components/likes/likes.component";
 import { ImageComponent } from "./shared/components/image.component";
 import { numberFormatterUtility } from "./utilities/numberFormatter.utility";
-import { JoinedComponent } from "./components/joined/joined.component";
 import { SharedComponent } from "./components/shares/share.component";
 import { GiftComponent } from "./components/gifts/gifts.component";
 
@@ -19,14 +18,104 @@ const NEW_FOLLOWER_AUDIO = new Audio(
 const CHEER_AUDIO = new Audio("https://benwainaina.github.io//cheer.mp3");
 
 export const HomeComponent = () => {
+  /**
+   * States
+   */
+  const [showActionsScreen, setShowActionsScreen] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>("");
+  const [gameName, setGameName] = useState<string>("");
+  const [totalFollowersGoal, setTotalFollowersGoal] = useState<number>(0);
+  const [totalLikesGoal, setTotalLikesGoal] = useState<number>(0);
+
   return (
     <div className="home">
-      <ActionsComponent />
+      {showActionsScreen ? (
+        <ActionsComponent
+          username={username}
+          gameName={gameName}
+          totalFollowersGoal={totalFollowersGoal}
+          totalLikesGoal={totalLikesGoal}
+        />
+      ) : (
+        <LandingComponent
+          onConfirm={(
+            username: string,
+            gameName: string,
+            totalFollowersGoal: number,
+            totalLikesGoal: number,
+          ) => {
+            setUsername(username);
+            setGameName(gameName);
+            setTotalFollowersGoal(totalFollowersGoal);
+            setTotalLikesGoal(totalLikesGoal);
+            setShowActionsScreen(true);
+          }}
+        />
+      )}
     </div>
   );
 };
 
-const ActionsComponent = () => {
+const LandingComponent = ({ onConfirm }: any) => {
+  /**
+   * States
+   */
+  const [username, setUsername] = useState<string>("bacotbapakkau");
+  const [gameName, setGameName] = useState<string>("fc 2026 on pc using steam");
+  const [totalFollowersGoal, setTotalFollowersGoal] = useState<number>(5);
+  const [totalLikesGoal, setTotalLikesGoal] = useState<number>(1000);
+
+  return (
+    <form className="landingComponent__form">
+      <input
+        value={username}
+        className="landingComponent__form__field"
+        placeholder="Username goes here"
+        type="text"
+        onChange={(ev) => setUsername(ev.target.value)}
+      />
+      <input
+        value={gameName}
+        className="landingComponent__form__field"
+        placeholder="Game name goes here"
+        type="text"
+        onChange={(ev) => setGameName(ev.target.value)}
+      />
+      <input
+        value={totalFollowersGoal}
+        className="landingComponent__form__field"
+        placeholder="Total followers increment"
+        type="number"
+        onChange={(ev) => setTotalFollowersGoal(parseInt(ev.target.value))}
+      />
+      <input
+        value={totalLikesGoal}
+        className="landingComponent__form__field"
+        placeholder="User likes reset point"
+        type="number"
+        onChange={(ev) => setTotalLikesGoal(parseInt(ev.target.value))}
+      />
+      <button
+        className="landingComponent__form__button"
+        disabled={
+          !username || !gameName || !totalFollowersGoal || !totalLikesGoal
+        }
+        onClick={() =>
+          onConfirm(username, gameName, totalFollowersGoal, totalLikesGoal)
+        }
+      >
+        Confirm
+      </button>
+    </form>
+  );
+};
+
+const ActionsComponent = ({
+  username,
+  gameName,
+  totalFollowersGoal,
+  totalLikesGoal,
+}: any) => {
   /**
    * Hooks
    */
@@ -51,9 +140,7 @@ const ActionsComponent = () => {
   const [followedDelta, setFollowedDelta] = useState<Record<string, string>>(
     {},
   );
-  const [newFollowersGoal, setNewFollowersGoal] = useState(
-    EXTERNAL_CONSTANTS.totalFollowersGoal,
-  );
+  const [newFollowersGoal, setNewFollowersGoal] = useState(totalFollowersGoal);
   const [newFollowerUsernames, setNewFollowerUsernames] = useState<string[]>(
     [],
   );
@@ -75,7 +162,7 @@ const ActionsComponent = () => {
     if (webSocket) {
       setTimeout(() => {
         sendSocketData({
-          username: EXTERNAL_CONSTANTS.username,
+          username,
           action: "connect",
         });
       }, 2000);
@@ -103,9 +190,7 @@ const ActionsComponent = () => {
             if (!userIsAlreadyAFollower) {
               const _newFollowers = newFollowers + 1;
               if (_newFollowers >= newFollowersGoal) {
-                setNewFollowersGoal(
-                  newFollowersGoal + EXTERNAL_CONSTANTS.totalFollowersGoal,
-                );
+                setNewFollowersGoal(newFollowersGoal + totalFollowersGoal);
               }
               setNewFollowers(_newFollowers);
               setFollowedDelta(payload);
@@ -157,7 +242,7 @@ const ActionsComponent = () => {
           </div>
         </div>
 
-        <GiftComponent />
+        <GiftComponent gameName={gameName} />
 
         <div className="sectionTwo">
           <div className="sectionTwo_A">
@@ -172,6 +257,7 @@ const ActionsComponent = () => {
             <LikesComponent
               payload={likesDelta}
               totalCumulativeLikes={likesCount}
+              totalLikesGoal={totalLikesGoal}
             />
           </div>
         </div>
@@ -179,6 +265,7 @@ const ActionsComponent = () => {
         <div
           style={{
             backgroundColor: "red",
+            display: "none",
           }}
         >
           <button onClick={() => mockAction("like", { likes_increment: 1 })}>

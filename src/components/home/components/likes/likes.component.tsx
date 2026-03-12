@@ -8,7 +8,6 @@ import { numberFormatterUtility } from "../../utilities/numberFormatter.utility"
 import "./likes.component.styles";
 import { MOCK_DATA } from "../../../constants/mock.users.constants";
 import { AnimatedListComponent } from "../../shared/components/animatedList/animatedList.component";
-import { EXTERNAL_CONSTANTS } from "../../../constants/constants";
 import { orderBy } from "lodash";
 
 interface ILikeInfo {
@@ -19,21 +18,25 @@ interface ILikeInfo {
 
 const payload = [];
 
-export const LikesComponent = ({ payload, totalCumulativeLikes }: any) => {
+export const LikesComponent = ({
+  payload,
+  totalCumulativeLikes,
+  totalLikesGoal,
+}: any) => {
   /**
    * States
    */
   const [leaderBoard, setLeaderBoard] = useState<any[]>([]);
   const [totalLikes, setTotalLikes] = useState<number>(0);
   const [lastShareOrFollow, setLastShareOrFollow] = useState<any>();
-  const [goal, setGoal] = useState<number>(EXTERNAL_CONSTANTS.totalLikesGoal);
+  const [goal, setGoal] = useState<number>(totalLikesGoal);
 
   /**
    * Effects
    */
   useEffect(() => {
     if (totalCumulativeLikes >= goal) {
-      setGoal(goal + EXTERNAL_CONSTANTS.totalLikesGoal);
+      setGoal(goal + totalLikesGoal);
       setLeaderBoard(leaderBoard.map((user) => ({ ...user, totalLikes: 0 })));
     } else {
       if (payload && Object.keys(payload).length !== 0) {
