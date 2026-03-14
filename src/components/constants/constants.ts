@@ -6,3 +6,4 @@ export const EXTERNAL_CONSTANTS = {
 // tv_asahi_news
 // alkasstvsports
 // bacotbapakkau
+// yoyo_savagemike

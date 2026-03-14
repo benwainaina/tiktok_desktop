@@ -11,6 +11,7 @@ import { ImageComponent } from "./shared/components/image.component";
 import { numberFormatterUtility } from "./utilities/numberFormatter.utility";
 import { SharedComponent } from "./components/shares/share.component";
 import { GiftComponent } from "./components/gifts/gifts.component";
+import { TeleprompterComponent } from "./components/teleprompter/teleprompter";
 
 const NEW_FOLLOWER_AUDIO = new Audio(
   "https://benwainaina.github.io//newfolloweralert.mp3",
@@ -133,6 +134,7 @@ const ActionsComponent = ({
    */
   const [likesDelta, setLikesDelta] = useState<Record<string, string>>({});
   const [followsDelta, setFollowsDelta] = useState<Record<string, string>>({});
+  const [giftsDelta, setGiftsDelta] = useState<Record<string, string>>({});
   const [likesCount, setLikesCount] = useState<number>(0);
   const [joinedDelta, setJoinedDelta] = useState<Record<string, string>>({});
   const [sharedDelta, setSharedDelta] = useState<Record<string, string>>({});
@@ -207,6 +209,9 @@ const ActionsComponent = ({
         case "share":
           setSharedDelta(payload);
           break;
+        case "gift":
+          setGiftsDelta(payload);
+          break;
       }
     }
   }, [socketData]);
@@ -218,7 +223,7 @@ const ActionsComponent = ({
   }, []);
 
   const mockAction = (event_type: string, payload?: any) => {
-    const mockName = 1234; // Math.ceil(Math.random() * 1000);
+    const mockName = Math.ceil(Math.random() * 1000);
     setSocketData({
       data: JSON.stringify({
         username: mockName,
@@ -242,7 +247,17 @@ const ActionsComponent = ({
           </div>
         </div>
 
-        <GiftComponent gameName={gameName} />
+        <TeleprompterComponent gameName={gameName} />
+        <GiftComponent payload={giftsDelta} />
+
+        {/* <div className="promptersWrapper">
+          <div className="promptersWrapper__item">
+            <TeleprompterComponent gameName={gameName} />
+          </div>
+          <div className="promptersWrapper__item">
+            <GiftComponent payload={giftsDelta} />
+          </div>
+        </div> */}
 
         <div className="sectionTwo">
           <div className="sectionTwo_A">
@@ -265,7 +280,6 @@ const ActionsComponent = ({
         <div
           style={{
             backgroundColor: "red",
-            display: "none",
           }}
         >
           <button onClick={() => mockAction("like", { likes_increment: 1 })}>

@@ -188,3 +188,14 @@
   color: #ffffff;
   /* font-style: italic; */
 }
+
+/* Prompters */
+.promptersWrapper {
+  display: flex;
+  column-gap: 12px;
+}
+
+.promptersWrapper__item {
+  flex: 1;
+  overflow: hidden;
+}
