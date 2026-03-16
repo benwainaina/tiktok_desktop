@@ -12,6 +12,7 @@ import { numberFormatterUtility } from "./utilities/numberFormatter.utility";
 import { SharedComponent } from "./components/shares/share.component";
 import { GiftComponent } from "./components/gifts/gifts.component";
 import { TeleprompterComponent } from "./components/teleprompter/teleprompter";
+import { JoinedComponent } from "./components/joined/joined.component";
 
 const NEW_FOLLOWER_AUDIO = new Audio(
   "https://benwainaina.github.io//newfolloweralert.mp3",
@@ -63,8 +64,8 @@ const LandingComponent = ({ onConfirm }: any) => {
    */
   const [username, setUsername] = useState<string>("gameranthemtv");
   const [gameName, setGameName] = useState<string>("fc 2026 on pc using steam");
-  const [totalFollowersGoal, setTotalFollowersGoal] = useState<number>();
-  const [totalLikesGoal, setTotalLikesGoal] = useState<number>();
+  const [totalFollowersGoal, setTotalFollowersGoal] = useState<number>(15);
+  const [totalLikesGoal, setTotalLikesGoal] = useState<number>(1500);
 
   return (
     <form className="landingComponent__form">
@@ -248,16 +249,11 @@ const ActionsComponent = ({
         </div>
 
         <TeleprompterComponent gameName={gameName} />
-        <GiftComponent payload={giftsDelta} />
-
-        {/* <div className="promptersWrapper">
-          <div className="promptersWrapper__item">
-            <TeleprompterComponent gameName={gameName} />
-          </div>
-          <div className="promptersWrapper__item">
-            <GiftComponent payload={giftsDelta} />
-          </div>
-        </div> */}
+        {Object.keys(giftsDelta).length !== 0 ? (
+          <GiftComponent payload={giftsDelta} />
+        ) : (
+          <JoinedComponent payload={joinedDelta} />
+        )}
 
         <div className="sectionTwo">
           <div className="sectionTwo_A">

@@ -3,23 +3,27 @@ import { useEffect, useState } from "react";
 import { AnimatedListComponent } from "../../shared/components/animatedList/animatedList.component";
 import { ImageComponent } from "../../shared/components/image.component";
 import "./joined.component.styles";
+import Marquee from "react-fast-marquee/dist";
 
 export const JoinedComponent = ({ payload }: any) => {
   const [userList, setUserList] = useState<any[]>([]);
 
   useEffect(() => {
     if (payload && Object.keys(payload).length !== 0) {
-      setUserList([payload]);
+      if (userList.length >= 20) {
+        userList.shift();
+      }
+      setUserList([...userList, payload]);
     }
   }, [payload]);
 
   return (
     <div className="joinedTheLiveWrapper">
-      <AnimatedListComponent
-        list={userList.slice(0, 1)}
-        RefListComponent={JoinedUserComponent}
-        wrapperHeight={35}
-      />
+      <Marquee speed={25} direction="left" delay={userList.length > 5 ? 5 : 0}>
+        {userList.map((gifter) => (
+          <JoinedUserComponent payload={gifter} />
+        ))}
+      </Marquee>
     </div>
   );
 };
