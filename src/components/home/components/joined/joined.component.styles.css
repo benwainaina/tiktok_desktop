@@ -1,5 +1,10 @@
 .joinedTheLiveWrapper {
-  margin-top: 12px;
+  min-height: 50px;
+  display: flex;
+  position: absolute;
+  left: 0;
+  bottom: 100px;
+  width: 100%;
 }
 
 .joinedTheLiveWrapper__user {
