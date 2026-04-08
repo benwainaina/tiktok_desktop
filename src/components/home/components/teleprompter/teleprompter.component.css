@@ -17,6 +17,11 @@
   align-items: center;
 }
 
+.advertContent__wrapper__youtubeBanner {
+  border-radius: 100%;
+  height: 34px;
+}
+
 .advertContent__wrapper:last-of-type {
   margin-right: 12px;
 }
