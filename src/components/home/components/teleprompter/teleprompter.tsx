@@ -19,18 +19,17 @@ export const TeleprompterComponent = ({ gameName }: any) => {
           {advertContent.map((content, index) => {
             if (index === 0 || index === 2) {
               return (
-                <>
+                <div key={index} className="advertContent__extra">
                   <div className="advertContent__wrapper advertContent__wrapper__youtubeBanner">
                     <ImageComponent uri="https://iili.io/BcxpeAN.png" />
                   </div>
                   <AdvertContentComponent
-                    key={index}
                     payload={{
                       ...content,
                       isLast: index === advertContent.length - 1,
                     }}
                   />
-                </>
+                </div>
               );
             }
             return (

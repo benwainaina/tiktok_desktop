@@ -12,6 +12,11 @@
   min-height: 50px;
 }
 
+.advertContent__extra {
+  display: flex;
+  column-gap: 24px;
+}
+
 .advertContent__wrapper {
   display: flex;
   align-items: center;
